@@ -77,16 +77,27 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "دلّني | اختر التخصص واحجز طبيبك في كفر صقر" },
+      {
+        name: "description",
+        content:
+          "دلّني يساعدك توصل للتخصص والطبيب المناسب في كفر صقر، مع تقييمات المرضى وحجز المواعيد بسهولة.",
+      },
+      { property: "og:title", content: "دلّني — اختر التخصص واحجز طبيبك" },
+      {
+        property: "og:description",
+        content: "منصة ذكية لاختيار التخصص الطبي المناسب وحجز الأطباء في كفر صقر.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap",
+      },
       {
         rel: "stylesheet",
         href: appCss,
@@ -94,6 +105,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),
+
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
