@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Accessibility,
+  AlertTriangle,
   ArrowRight,
   Check,
   Info,
@@ -15,6 +16,7 @@ import {
 import { useMemo, useRef, useState, type PointerEvent } from "react";
 
 import body3d from "@/assets/body-3d.png";
+import { recommendSpecialty, regionMappings, urgentSymptoms } from "@/lib/symptom-mapping";
 
 export const Route = createFileRoute("/body-guide")({
   head: () => ({
@@ -45,10 +47,18 @@ function BodyGuidePrototype() {
   const [rotation, setRotation] = useState(0);
   const [zoom, setZoom] = useState(1);
   const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
+  const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
+  const [urgentSelected, setUrgentSelected] = useState<string | null>(null);
+  const [resultRequested, setResultRequested] = useState(false);
   const dragStart = useRef<{ x: number; rotation: number } | null>(null);
 
   const normalizedRotation = ((rotation % 360) + 360) % 360;
   const isFrontVisible = normalizedRotation <= 70 || normalizedRotation >= 290;
+  const selectedMapping = selectedRegion ? regionMappings[selectedRegion] : null;
+  const recommendation =
+    resultRequested && selectedRegion && !urgentSelected
+      ? recommendSpecialty(selectedRegion, selectedSymptoms)
+      : null;
   const viewLabel = useMemo(() => {
     if (normalizedRotation <= 45 || normalizedRotation >= 315) return "واجهة أمامية";
     if (normalizedRotation < 135) return "الجانب الأيسر";
@@ -76,6 +86,26 @@ function BodyGuidePrototype() {
     setRotation(0);
     setZoom(1);
     setSelectedRegion(null);
+    setSelectedSymptoms([]);
+    setUrgentSelected(null);
+    setResultRequested(false);
+  };
+
+  const chooseRegion = (regionId: string) => {
+    setSelectedRegion(regionId);
+    setSelectedSymptoms([]);
+    setUrgentSelected(null);
+    setResultRequested(false);
+  };
+
+  const toggleSymptom = (symptomId: string) => {
+    setSelectedSymptoms((current) =>
+      current.includes(symptomId)
+        ? current.filter((item) => item !== symptomId)
+        : [...current, symptomId],
+    );
+    setUrgentSelected(null);
+    setResultRequested(false);
   };
 
   return (
@@ -91,7 +121,7 @@ function BodyGuidePrototype() {
           </Link>
           <div className="min-w-0 flex-1">
             <h1 className="truncate font-black text-primary sm:text-lg">الدليل البصري للجسم</h1>
-            <p className="text-[11px] text-muted-foreground">Prototype — المرحلة الرابعة</p>
+            <p className="text-[11px] text-muted-foreground">الأعراض والتخصص — المرحلة الخامسة</p>
           </div>
           <span className="rounded-full bg-success/10 px-3 py-1 text-[10px] font-bold text-success">
             خفيف للموبايل
@@ -110,8 +140,8 @@ function BodyGuidePrototype() {
               حرّك النموذج واضغط على المنطقة
             </h2>
             <p className="text-sm leading-7 text-muted-foreground">
-              اسحب يمينًا أو يسارًا للدوران، واستخدم التكبير لرؤية المنطقة بوضوح. اختيار الأعراض
-              والتخصص سيُضاف في المرحلة الخامسة.
+              اختر المنطقة ثم حدّد الأعراض الظاهرة لك. سنقترح تخصصًا مناسبًا فقط بقواعد ثابتة، من
+              دون تشخيص أو تخمين طبي.
             </p>
           </div>
 
@@ -180,9 +210,9 @@ function BodyGuidePrototype() {
                         key={region.id}
                         type="button"
                         onPointerDown={(event) => event.stopPropagation()}
-                        onClick={() => setSelectedRegion(region.label)}
+                        onClick={() => chooseRegion(region.id)}
                         aria-label={`اختيار منطقة ${region.label}`}
-                        className={`absolute z-10 flex size-8 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 shadow-lg transition hover:scale-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent/30 ${selectedRegion === region.label ? "border-card bg-accent text-accent-foreground" : "border-accent bg-card/90 text-accent"}`}
+                        className={`absolute z-10 flex size-8 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 shadow-lg transition hover:scale-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent/30 ${selectedRegion === region.id ? "border-card bg-accent text-accent-foreground" : "border-accent bg-card/90 text-accent"}`}
                         style={{ top: region.top, right: region.right }}
                       >
                         <span className="size-2 rounded-full bg-current" />
@@ -226,17 +256,28 @@ function BodyGuidePrototype() {
               <section className="rounded-3xl border border-border bg-card p-5 shadow-[var(--shadow-card)]">
                 <h3 className="mb-4 flex items-center gap-2 font-bold text-primary">
                   <Accessibility className="size-5 text-accent" />
-                  المنطقة المحددة
+                  ١. اختر المنطقة
                 </h3>
-                {selectedRegion ? (
+                <div className="mb-4 grid grid-cols-3 gap-2">
+                  {(["skin", "teeth", "child"] as const).map((regionId) => (
+                    <button
+                      key={regionId}
+                      type="button"
+                      onClick={() => chooseRegion(regionId)}
+                      className={`min-h-11 rounded-xl border px-2 text-xs font-bold transition ${selectedRegion === regionId ? "border-accent bg-accent text-accent-foreground" : "border-input bg-background text-primary"}`}
+                    >
+                      {regionMappings[regionId]!.label}
+                    </button>
+                  ))}
+                </div>
+                {selectedMapping ? (
                   <div className="rounded-2xl border border-success/20 bg-success/5 p-4">
                     <span className="mb-2 flex items-center gap-2 text-sm font-bold text-success">
                       <Check className="size-4" />
-                      تم اختيار {selectedRegion}
+                      تم اختيار {selectedMapping.label}
                     </span>
                     <p className="text-xs leading-6 text-muted-foreground">
-                      في المرحلة التالية ستظهر الأعراض المرتبطة بهذه المنطقة لاختيار التخصص المناسب
-                      فقط.
+                      اختر من الأعراض التالية ما ينطبق عليك.
                     </p>
                   </div>
                 ) : (
@@ -249,25 +290,124 @@ function BodyGuidePrototype() {
                 )}
               </section>
 
+              {selectedMapping && (
+                <section className="rounded-3xl border border-border bg-card p-5 shadow-[var(--shadow-card)]">
+                  <h3 className="mb-4 font-bold text-primary">٢. حدّد الأعراض</h3>
+                  <div className="grid gap-2">
+                    {selectedMapping.symptoms.map((symptom) => {
+                      const selected = selectedSymptoms.includes(symptom.id);
+                      return (
+                        <button
+                          key={symptom.id}
+                          type="button"
+                          aria-pressed={selected}
+                          onClick={() => toggleSymptom(symptom.id)}
+                          className={`flex min-h-11 items-center gap-3 rounded-xl border px-3 text-right text-xs font-bold transition ${selected ? "border-accent bg-accent/10 text-primary" : "border-input bg-background text-muted-foreground"}`}
+                        >
+                          <span
+                            className={`flex size-5 shrink-0 items-center justify-center rounded-md border ${selected ? "border-accent bg-accent text-accent-foreground" : "border-input"}`}
+                          >
+                            {selected && <Check className="size-3.5" />}
+                          </span>
+                          {symptom.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <div className="mt-5 rounded-2xl border border-destructive/25 bg-destructive/5 p-4">
+                    <h4 className="mb-2 flex items-center gap-2 text-xs font-black text-destructive">
+                      <AlertTriangle className="size-4" />
+                      هل يوجد عرض طارئ؟
+                    </h4>
+                    <div className="space-y-1.5">
+                      {urgentSymptoms.map((symptom) => (
+                        <button
+                          key={symptom.id}
+                          type="button"
+                          onClick={() => {
+                            setUrgentSelected(symptom.id);
+                            setSelectedSymptoms([]);
+                            setResultRequested(false);
+                          }}
+                          className={`w-full rounded-lg border px-3 py-2 text-right text-[11px] font-bold ${urgentSelected === symptom.id ? "border-destructive bg-destructive text-destructive-foreground" : "border-destructive/20 bg-card text-destructive"}`}
+                        >
+                          {symptom.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {urgentSelected ? (
+                    <div
+                      role="alert"
+                      className="mt-4 rounded-2xl bg-destructive p-4 text-destructive-foreground"
+                    >
+                      <p className="mb-1 flex items-center gap-2 text-sm font-black">
+                        <AlertTriangle className="size-5" />
+                        قد تكون هذه حالة طارئة
+                      </p>
+                      <p className="text-xs leading-6">
+                        اطلب المساعدة الطبية العاجلة الآن أو اتصل برقم الطوارئ المحلي. لا تنتظر
+                        اقتراح تخصص من الموقع.
+                      </p>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      disabled={selectedSymptoms.length === 0}
+                      onClick={() => setResultRequested(true)}
+                      className="mt-4 min-h-12 w-full rounded-xl bg-accent px-4 text-sm font-black text-accent-foreground disabled:cursor-not-allowed disabled:opacity-40"
+                    >
+                      اعرض التخصص المقترح
+                    </button>
+                  )}
+
+                  {resultRequested && !urgentSelected && (
+                    <div className="mt-4 rounded-2xl border border-accent/20 bg-accent/5 p-4">
+                      {recommendation ? (
+                        <>
+                          <p className="text-xs text-muted-foreground">التخصص المقترح</p>
+                          <p className="my-1 text-xl font-black text-primary">{recommendation}</p>
+                          <p className="text-xs leading-6 text-muted-foreground">
+                            هذا اقتراح للتخصص فقط، وليس تشخيصًا أو علاجًا.
+                          </p>
+                        </>
+                      ) : (
+                        <>
+                          <p className="text-sm font-black text-primary">النتيجة غير حاسمة</p>
+                          <p className="mt-1 text-xs leading-6 text-muted-foreground">
+                            لم نتمكن من تحديد التخصص المناسب من الخيارات المتاحة. تواصل معنا عبر
+                            واتساب وسنساعدك.
+                          </p>
+                          <button
+                            type="button"
+                            disabled
+                            title="سيتم تفعيل الرقم عند إضافته من لوحة الإدارة"
+                            className="mt-3 min-h-10 w-full rounded-lg border border-input bg-card text-xs font-bold text-muted-foreground opacity-60"
+                          >
+                            واتساب — الرقم غير مضاف بعد
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  )}
+                </section>
+              )}
+
               <section className="rounded-3xl border border-accent/15 bg-accent/5 p-5">
                 <h3 className="mb-3 flex items-center gap-2 text-sm font-bold text-primary">
                   <Info className="size-4 text-accent" />
-                  حدود النموذج الأولي
+                  إرشاد آمن
                 </h3>
-                <ul className="space-y-2 text-xs leading-5 text-muted-foreground">
-                  <li className="flex gap-2">
-                    <Check className="mt-0.5 size-3.5 shrink-0 text-success" />
-                    الدوران والتكبير واختيار المناطق تعمل.
-                  </li>
-                  <li className="flex gap-2">
-                    <VenusAndMars className="mt-0.5 size-3.5 shrink-0 text-accent" />
-                    تبديل نموذج رجل/امرأة متاح كتجربة واجهة.
-                  </li>
-                  <li className="flex gap-2">
-                    <Info className="mt-0.5 size-3.5 shrink-0 text-muted-foreground" />
-                    الصورة الحالية أصل بصري تجريبي وليست نموذجًا تشريحيًا كاملًا.
-                  </li>
-                </ul>
+                <p className="text-xs leading-6 text-muted-foreground">
+                  الاقتراح مبني على اختيارات ثابتة لتوجيهك إلى تخصص فقط. لا يستخدم الذكاء الاصطناعي
+                  ولا يقدّم تشخيصًا، والصورة ليست نموذجًا تشريحيًا كاملًا.
+                </p>
+                <p className="mt-2 flex items-center gap-2 text-[11px] font-bold text-muted-foreground">
+                  <VenusAndMars className="size-3.5 text-accent" />
+                  تبديل رجل/امرأة متاح كتجربة واجهة.
+                </p>
               </section>
 
               <button
