@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowLeft,
   BadgeCheck,
@@ -133,8 +133,8 @@ function Index() {
             </div>
 
             <div className="grid gap-4 md:grid-cols-3">
-              <a
-                href="#top-doctors"
+              <Link
+                to="/search"
                 className="group flex items-center gap-4 rounded-3xl border border-border bg-card p-5 text-right shadow-[var(--shadow-card)] transition-all hover:-translate-y-1 hover:border-accent/40 hover:shadow-[var(--shadow-cta)] md:flex-col md:items-start"
               >
                 <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-accent/10 text-accent transition-transform group-hover:scale-110">
@@ -147,7 +147,7 @@ function Index() {
                   </span>
                 </span>
                 <ArrowLeft className="size-5 text-accent transition-transform group-hover:-translate-x-1" />
-              </a>
+              </Link>
               <a
                 href="#visual-guide"
                 className="group flex items-center gap-4 rounded-3xl bg-primary p-5 text-right text-primary-foreground shadow-[var(--shadow-cta)] transition-transform hover:-translate-y-1 md:flex-col md:items-start"
