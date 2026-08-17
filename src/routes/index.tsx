@@ -163,8 +163,8 @@ function Index() {
                 </span>
                 <ArrowLeft className="size-5 text-accent transition-transform group-hover:-translate-x-1" />
               </a>
-              <a
-                href="#visual-guide"
+              <Link
+                to="/body-guide"
                 className="group flex items-center gap-4 rounded-3xl border border-border bg-card p-5 text-right shadow-[var(--shadow-card)] transition-all hover:-translate-y-1 hover:border-accent/40 hover:shadow-[var(--shadow-cta)] md:flex-col md:items-start"
               >
                 <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-success/10 text-success transition-transform group-hover:scale-110">
@@ -177,7 +177,7 @@ function Index() {
                   </span>
                 </span>
                 <ArrowLeft className="size-5 text-accent transition-transform group-hover:-translate-x-1" />
-              </a>
+              </Link>
             </div>
           </div>
         </header>
@@ -196,16 +196,13 @@ function Index() {
                 يقدم دلّني تشخيصًا طبيًا.
               </p>
               <div className="flex flex-wrap items-center gap-3">
-                <button
-                  type="button"
-                  disabled
-                  className="cursor-not-allowed rounded-xl bg-primary px-6 py-3 text-sm font-bold text-primary-foreground opacity-70"
+                <Link
+                  to="/body-guide"
+                  className="rounded-xl bg-primary px-6 py-3 text-sm font-bold text-primary-foreground shadow-[var(--shadow-card)]"
                 >
                   بدء الفحص البصري
-                </button>
-                <span className="text-xs font-semibold text-muted-foreground">
-                  يتفعّل في المرحلة الرابعة
-                </span>
+                </Link>
+                <span className="text-xs font-semibold text-success">النموذج الأولي متاح الآن</span>
               </div>
             </div>
             <div className="relative min-h-72 overflow-hidden bg-gradient-to-t from-accent/10 to-transparent md:min-h-full">
