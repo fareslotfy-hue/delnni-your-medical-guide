@@ -12,7 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccountRouteImport } from './routes/account'
 import { Route as BodyGuideRouteImport } from './routes/body-guide'
+import { Route as DoctorDashboardRouteImport } from './routes/doctor-dashboard'
 import { Route as HealthJourneyRouteImport } from './routes/health-journey'
+import { Route as JoinDoctorRouteImport } from './routes/join-doctor'
 import { Route as PatientRouteImport } from './routes/patient'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as BookingDoctorIdRouteImport } from './routes/booking/$doctorId'
@@ -35,9 +37,19 @@ const BodyGuideRoute = BodyGuideRouteImport.update({
   path: '/body-guide',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DoctorDashboardRoute = DoctorDashboardRouteImport.update({
+  id: '/doctor-dashboard',
+  path: '/doctor-dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HealthJourneyRoute = HealthJourneyRouteImport.update({
   id: '/health-journey',
   path: '/health-journey',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JoinDoctorRoute = JoinDoctorRouteImport.update({
+  id: '/join-doctor',
+  path: '/join-doctor',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PatientRoute = PatientRouteImport.update({
@@ -75,7 +87,9 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
   '/body-guide': typeof BodyGuideRoute
+  '/doctor-dashboard': typeof DoctorDashboardRoute
   '/health-journey': typeof HealthJourneyRoute
+  '/join-doctor': typeof JoinDoctorRoute
   '/patient': typeof PatientRoute
   '/search': typeof SearchRoute
   '/booking/$doctorId': typeof BookingDoctorIdRoute
@@ -87,7 +101,9 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
   '/body-guide': typeof BodyGuideRoute
+  '/doctor-dashboard': typeof DoctorDashboardRoute
   '/health-journey': typeof HealthJourneyRoute
+  '/join-doctor': typeof JoinDoctorRoute
   '/patient': typeof PatientRoute
   '/search': typeof SearchRoute
   '/booking/$doctorId': typeof BookingDoctorIdRoute
@@ -100,7 +116,9 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
   '/body-guide': typeof BodyGuideRoute
+  '/doctor-dashboard': typeof DoctorDashboardRoute
   '/health-journey': typeof HealthJourneyRoute
+  '/join-doctor': typeof JoinDoctorRoute
   '/patient': typeof PatientRoute
   '/search': typeof SearchRoute
   '/booking/$doctorId': typeof BookingDoctorIdRoute
@@ -114,7 +132,9 @@ export interface FileRouteTypes {
     | '/'
     | '/account'
     | '/body-guide'
+    | '/doctor-dashboard'
     | '/health-journey'
+    | '/join-doctor'
     | '/patient'
     | '/search'
     | '/booking/$doctorId'
@@ -126,7 +146,9 @@ export interface FileRouteTypes {
     | '/'
     | '/account'
     | '/body-guide'
+    | '/doctor-dashboard'
     | '/health-journey'
+    | '/join-doctor'
     | '/patient'
     | '/search'
     | '/booking/$doctorId'
@@ -138,7 +160,9 @@ export interface FileRouteTypes {
     | '/'
     | '/account'
     | '/body-guide'
+    | '/doctor-dashboard'
     | '/health-journey'
+    | '/join-doctor'
     | '/patient'
     | '/search'
     | '/booking/$doctorId'
@@ -151,7 +175,9 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccountRoute: typeof AccountRoute
   BodyGuideRoute: typeof BodyGuideRoute
+  DoctorDashboardRoute: typeof DoctorDashboardRoute
   HealthJourneyRoute: typeof HealthJourneyRoute
+  JoinDoctorRoute: typeof JoinDoctorRoute
   PatientRoute: typeof PatientRoute
   SearchRoute: typeof SearchRoute
   BookingDoctorIdRoute: typeof BookingDoctorIdRoute
@@ -183,11 +209,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BodyGuideRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/doctor-dashboard': {
+      id: '/doctor-dashboard'
+      path: '/doctor-dashboard'
+      fullPath: '/doctor-dashboard'
+      preLoaderRoute: typeof DoctorDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/health-journey': {
       id: '/health-journey'
       path: '/health-journey'
       fullPath: '/health-journey'
       preLoaderRoute: typeof HealthJourneyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/join-doctor': {
+      id: '/join-doctor'
+      path: '/join-doctor'
+      fullPath: '/join-doctor'
+      preLoaderRoute: typeof JoinDoctorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/patient': {
@@ -239,7 +279,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccountRoute: AccountRoute,
   BodyGuideRoute: BodyGuideRoute,
+  DoctorDashboardRoute: DoctorDashboardRoute,
   HealthJourneyRoute: HealthJourneyRoute,
+  JoinDoctorRoute: JoinDoctorRoute,
   PatientRoute: PatientRoute,
   SearchRoute: SearchRoute,
   BookingDoctorIdRoute: BookingDoctorIdRoute,
