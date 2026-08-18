@@ -73,6 +73,26 @@ export const regionMappings: Record<string, RegionMapping> = {
       { id: "knee-motion", label: "صعوبة حركة", specialty: "عظام" },
     ],
   },
+  "upper-back": {
+    id: "upper-back",
+    label: "أعلى الظهر والكتفين",
+    symptoms: [
+      { id: "upper-back-pain", label: "ألم مع الحركة", specialty: "عظام" },
+      { id: "shoulder-stiffness", label: "تيبّس الكتف", specialty: "عظام" },
+      { id: "upper-back-injury", label: "إصابة أو كدمة", specialty: "عظام" },
+      { id: "upper-back-rash", label: "طفح أو حكة", specialty: "جلدية" },
+    ],
+  },
+  "lower-back": {
+    id: "lower-back",
+    label: "أسفل الظهر",
+    symptoms: [
+      { id: "lower-back-pain", label: "ألم مع الحركة", specialty: "عظام" },
+      { id: "lower-back-stiffness", label: "تيبّس", specialty: "عظام" },
+      { id: "lower-back-injury", label: "إصابة أو كدمة", specialty: "عظام" },
+      { id: "lower-back-rash", label: "طفح أو حكة", specialty: "جلدية" },
+    ],
+  },
   skin: {
     id: "skin",
     label: "الجلد",
