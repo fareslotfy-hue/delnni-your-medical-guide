@@ -12,12 +12,7 @@ import {
 } from "lucide-react";
 import { useMemo, useState } from "react";
 
-import doctorDentistry from "@/assets/doctor-dentistry.webp";
-import doctorDermatology from "@/assets/doctor-dermatology.webp";
-import doctorEnt from "@/assets/doctor-ent.webp";
-import doctorInternal from "@/assets/doctor-internal.webp";
-import doctorOrthopedics from "@/assets/doctor-orthopedics.webp";
-import doctorPediatrics from "@/assets/doctor-pediatrics.webp";
+import { doctorImages } from "@/lib/doctor-assets";
 import { doctors, rankDoctors, type Doctor } from "@/lib/doctor-ranking";
 
 type DoctorSearch = {
@@ -30,7 +25,7 @@ type DoctorSearch = {
   nearestAppointment: boolean;
 };
 
-export const Route = createFileRoute("/doctors")({
+export const Route = createFileRoute("/doctors/")({
   validateSearch: (search: Record<string, unknown>): DoctorSearch => ({
     doctorName: typeof search["doctorName"] === "string" ? search["doctorName"] : "",
     specialty: typeof search["specialty"] === "string" ? search["specialty"] : "كل التخصصات",
@@ -53,16 +48,9 @@ export const Route = createFileRoute("/doctors")({
   component: DoctorResults,
 });
 
-const imageById = {
-  internal: doctorInternal,
-  pediatrics: doctorPediatrics,
-  orthopedics: doctorOrthopedics,
-  dermatology: doctorDermatology,
-  ent: doctorEnt,
-  dentistry: doctorDentistry,
-} as const;
-
 function DoctorCard({ doctor, rank }: { doctor: Doctor; rank?: number | undefined }) {
+  const search = Route.useSearch();
+
   return (
     <article className="relative overflow-hidden rounded-3xl border border-border bg-card p-4 shadow-[var(--shadow-card)] sm:p-5">
       {rank && (
@@ -71,16 +59,25 @@ function DoctorCard({ doctor, rank }: { doctor: Doctor; rank?: number | undefine
         </span>
       )}
       <div className="flex gap-4">
-        <img
-          src={imageById[doctor.image]}
-          alt={`صورة ${doctor.name}`}
-          width={96}
-          height={112}
-          loading="lazy"
-          className="h-28 w-24 shrink-0 rounded-2xl object-cover object-top"
-        />
+        <Link to="/doctors/$doctorId" params={{ doctorId: doctor.id }} search={search}>
+          <img
+            src={doctorImages[doctor.image]}
+            alt={`صورة ${doctor.name}`}
+            width={96}
+            height={112}
+            loading="lazy"
+            className="h-28 w-24 shrink-0 rounded-2xl object-cover object-top"
+          />
+        </Link>
         <div className="min-w-0 flex-1 pt-1">
-          <h3 className="truncate text-base font-black text-primary">{doctor.name}</h3>
+          <Link
+            to="/doctors/$doctorId"
+            params={{ doctorId: doctor.id }}
+            search={search}
+            className="block truncate text-base font-black text-primary hover:text-accent"
+          >
+            {doctor.name}
+          </Link>
           <p className="mt-1 text-xs font-bold text-accent">{doctor.specialty}</p>
           <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">
             <span className="flex items-center gap-1 font-black text-primary">
