@@ -9,6 +9,7 @@ import {
   Clock3,
   CreditCard,
   Heart,
+  HeartPulse,
   History,
   Hourglass,
   Info,
@@ -275,6 +276,14 @@ function PatientDashboard() {
                 </button>
               ))}
             </nav>
+            <Link
+              to="/health-journey"
+              className="flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-accent px-4 text-xs font-black text-accent-foreground shadow-[var(--shadow-card)]"
+            >
+              <HeartPulse className="size-4" />
+              رحلتي الصحية
+              <ChevronLeft className="mr-auto size-4" />
+            </Link>
           </aside>
 
           <div>
