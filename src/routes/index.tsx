@@ -95,14 +95,13 @@ function Index() {
             <span className="text-2xl font-black tracking-tight text-primary">دلّني</span>
           </a>
           <div className="flex items-center gap-2 sm:gap-3">
-            <button
-              type="button"
-              aria-label="حسابي - قريبًا"
-              title="قريبًا"
+            <Link
+              to="/account"
+              aria-label="حساب المريض"
               className="flex size-10 items-center justify-center rounded-full bg-secondary text-primary transition-colors hover:bg-muted"
             >
               <User className="size-5" />
-            </button>
+            </Link>
             <a
               href="#join-doctor"
               className="rounded-xl bg-accent px-3 py-2 text-xs font-bold text-accent-foreground transition-transform hover:-translate-y-0.5 sm:px-4 sm:text-sm"
