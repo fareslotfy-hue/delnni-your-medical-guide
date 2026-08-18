@@ -120,7 +120,7 @@ function PatientAccountPage() {
 
   const authenticate = (profile: { name: string; phone: string }) => {
     sessionStorage.setItem("delnni_demo_patient", JSON.stringify(profile));
-    if (returnTo.startsWith("/")) window.location.assign(returnTo);
+    window.location.assign(returnTo.startsWith("/") ? returnTo : "/patient");
   };
 
   return (
