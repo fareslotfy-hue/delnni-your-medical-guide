@@ -11,7 +11,7 @@ import {
   Star,
   Stethoscope,
 } from "lucide-react";
-import { type FormEvent, useState } from "react";
+import { useState } from "react";
 
 export const Route = createFileRoute("/search")({
   head: () => ({
@@ -34,7 +34,6 @@ type LocationStatus = "idle" | "loading" | "granted" | "denied" | "unavailable";
 
 function DoctorSearch() {
   const [locationStatus, setLocationStatus] = useState<LocationStatus>("idle");
-  const [submitted, setSubmitted] = useState(false);
   const [maxPrice, setMaxPrice] = useState(1000);
 
   const requestLocation = () => {
@@ -49,11 +48,6 @@ function DoctorSearch() {
       () => setLocationStatus("denied"),
       { enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 },
     );
-  };
-
-  const submitSearch = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setSubmitted(true);
   };
 
   return (
@@ -90,7 +84,8 @@ function DoctorSearch() {
           </div>
 
           <form
-            onSubmit={submitSearch}
+            action="/doctors"
+            method="get"
             className="grid gap-5 lg:grid-cols-[1fr_19rem] lg:items-start"
           >
             <div className="space-y-5">
@@ -290,25 +285,6 @@ function DoctorSearch() {
               </button>
             </aside>
           </form>
-
-          {submitted && (
-            <section
-              role="status"
-              className="mt-6 rounded-3xl border border-success/20 bg-success/5 p-5 sm:p-6"
-            >
-              <div className="flex items-start gap-3">
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-success/15 text-success">
-                  <Check className="size-5" />
-                </span>
-                <div>
-                  <h3 className="mb-1 font-bold text-primary">تم تجهيز اختيارات البحث</h3>
-                  <p className="text-xs leading-6 text-muted-foreground">
-                    واجهة النتائج الكاملة وبطاقات الأطباء ستُضاف في المرحلة السادسة وفق خطة المشروع.
-                  </p>
-                </div>
-              </div>
-            </section>
-          )}
         </div>
       </main>
     </div>
