@@ -12,8 +12,12 @@ import {
 } from "lucide-react";
 import { useMemo, useState } from "react";
 
-import doctor1 from "@/assets/doctor-1.jpg";
-import doctor2 from "@/assets/doctor-2.jpg";
+import doctorDentistry from "@/assets/doctor-dentistry.webp";
+import doctorDermatology from "@/assets/doctor-dermatology.webp";
+import doctorEnt from "@/assets/doctor-ent.webp";
+import doctorInternal from "@/assets/doctor-internal.webp";
+import doctorOrthopedics from "@/assets/doctor-orthopedics.webp";
+import doctorPediatrics from "@/assets/doctor-pediatrics.webp";
 import { doctors, rankDoctors, type Doctor } from "@/lib/doctor-ranking";
 
 type DoctorSearch = {
@@ -49,7 +53,14 @@ export const Route = createFileRoute("/doctors")({
   component: DoctorResults,
 });
 
-const imageById = { "doctor-1": doctor1, "doctor-2": doctor2 } as const;
+const imageById = {
+  internal: doctorInternal,
+  pediatrics: doctorPediatrics,
+  orthopedics: doctorOrthopedics,
+  dermatology: doctorDermatology,
+  ent: doctorEnt,
+  dentistry: doctorDentistry,
+} as const;
 
 function DoctorCard({ doctor, rank }: { doctor: Doctor; rank?: number | undefined }) {
   return (
@@ -168,6 +179,9 @@ function DoctorResults() {
               <h2 className="text-2xl font-black text-primary sm:text-3xl">
                 {results.length > 0 ? `${results.length} أطباء مناسبين` : "لا توجد نتائج مطابقة"}
               </h2>
+              <p className="mt-1 text-[11px] text-muted-foreground">
+                الأسماء والبيانات والصور الحالية شخصيات تجريبية لعرض شكل المنصة.
+              </p>
             </div>
             <button
               type="button"

@@ -10,7 +10,7 @@ export type Doctor = {
   nextSlotOrder: number;
   nextSlot: string;
   address: string;
-  image: "doctor-1" | "doctor-2";
+  image: "internal" | "pediatrics" | "orthopedics" | "dermatology" | "ent" | "dentistry";
 };
 
 export const doctors: Doctor[] = [
@@ -26,7 +26,7 @@ export const doctors: Doctor[] = [
     nextSlotOrder: 2,
     nextSlot: "اليوم، 6:00 م",
     address: "شارع المركز، كفر صقر",
-    image: "doctor-1",
+    image: "internal",
   },
   {
     id: "mariam-adel",
@@ -40,7 +40,7 @@ export const doctors: Doctor[] = [
     nextSlotOrder: 1,
     nextSlot: "اليوم، 5:30 م",
     address: "ميدان المحطة، كفر صقر",
-    image: "doctor-2",
+    image: "pediatrics",
   },
   {
     id: "khaled-hassan",
@@ -54,7 +54,7 @@ export const doctors: Doctor[] = [
     nextSlotOrder: 4,
     nextSlot: "غدًا، 4:00 م",
     address: "شارع الجمهورية، كفر صقر",
-    image: "doctor-1",
+    image: "orthopedics",
   },
   {
     id: "salma-fouad",
@@ -68,7 +68,7 @@ export const doctors: Doctor[] = [
     nextSlotOrder: 3,
     nextSlot: "اليوم، 8:00 م",
     address: "شارع المدارس، كفر صقر",
-    image: "doctor-2",
+    image: "dermatology",
   },
   {
     id: "omar-samy",
@@ -82,7 +82,7 @@ export const doctors: Doctor[] = [
     nextSlotOrder: 5,
     nextSlot: "غدًا، 6:30 م",
     address: "طريق أبو كبير، كفر صقر",
-    image: "doctor-1",
+    image: "ent",
   },
   {
     id: "nour-ibrahim",
@@ -96,7 +96,7 @@ export const doctors: Doctor[] = [
     nextSlotOrder: 6,
     nextSlot: "السبت، 3:00 م",
     address: "شارع النصر، كفر صقر",
-    image: "doctor-2",
+    image: "dentistry",
   },
 ];
 
