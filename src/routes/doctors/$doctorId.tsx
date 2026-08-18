@@ -214,26 +214,25 @@ function DoctorProfilePage() {
                 </h2>
                 <div className="grid gap-2">
                   {profile.availableSlots.map((slot) => (
-                    <button
+                    <Link
                       key={slot}
-                      type="button"
-                      disabled
-                      title="اختيار الموعد سيتاح مع نظام الحجز في المرحلة التاسعة"
-                      className="min-h-11 cursor-not-allowed rounded-xl border border-input bg-background px-3 text-xs font-bold text-primary opacity-70"
+                      to="/booking/$doctorId"
+                      params={{ doctorId }}
+                      className="flex min-h-11 items-center justify-center rounded-xl border border-input bg-background px-3 text-xs font-bold text-primary transition hover:border-accent/40 hover:text-accent"
                     >
                       {slot}
-                    </button>
+                    </Link>
                   ))}
                 </div>
-                <button
-                  type="button"
-                  disabled
-                  className="mt-4 min-h-12 w-full cursor-not-allowed rounded-xl bg-primary px-4 text-sm font-black text-primary-foreground opacity-80"
+                <Link
+                  to="/booking/$doctorId"
+                  params={{ doctorId }}
+                  className="mt-4 flex min-h-12 w-full items-center justify-center rounded-xl bg-primary px-4 text-sm font-black text-primary-foreground"
                 >
                   احجز الآن
-                </button>
+                </Link>
                 <p className="mt-2 text-center text-[10px] text-muted-foreground">
-                  الحجز سيتاح في المرحلة التاسعة
+                  يلزم تسجيل الدخول عند بدء الحجز
                 </p>
               </section>
 
