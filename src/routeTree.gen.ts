@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccountRouteImport } from './routes/account'
 import { Route as BodyGuideRouteImport } from './routes/body-guide'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as BookingDoctorIdRouteImport } from './routes/booking/$doctorId'
 import { Route as DoctorsIndexRouteImport } from './routes/doctors.index'
 import { Route as DoctorsDoctorIdRouteImport } from './routes/doctors/$doctorId'
 
@@ -36,6 +37,11 @@ const SearchRoute = SearchRouteImport.update({
   path: '/search',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BookingDoctorIdRoute = BookingDoctorIdRouteImport.update({
+  id: '/booking/$doctorId',
+  path: '/booking/$doctorId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DoctorsIndexRoute = DoctorsIndexRouteImport.update({
   id: '/doctors/',
   path: '/doctors/',
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/account': typeof AccountRoute
   '/body-guide': typeof BodyGuideRoute
   '/search': typeof SearchRoute
+  '/booking/$doctorId': typeof BookingDoctorIdRoute
   '/doctors/$doctorId': typeof DoctorsDoctorIdRoute
   '/doctors/': typeof DoctorsIndexRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/account': typeof AccountRoute
   '/body-guide': typeof BodyGuideRoute
   '/search': typeof SearchRoute
+  '/booking/$doctorId': typeof BookingDoctorIdRoute
   '/doctors/$doctorId': typeof DoctorsDoctorIdRoute
   '/doctors': typeof DoctorsIndexRoute
 }
@@ -69,6 +77,7 @@ export interface FileRoutesById {
   '/account': typeof AccountRoute
   '/body-guide': typeof BodyGuideRoute
   '/search': typeof SearchRoute
+  '/booking/$doctorId': typeof BookingDoctorIdRoute
   '/doctors/$doctorId': typeof DoctorsDoctorIdRoute
   '/doctors/': typeof DoctorsIndexRoute
 }
@@ -79,6 +88,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/body-guide'
     | '/search'
+    | '/booking/$doctorId'
     | '/doctors/$doctorId'
     | '/doctors/'
   fileRoutesByTo: FileRoutesByTo
@@ -87,6 +97,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/body-guide'
     | '/search'
+    | '/booking/$doctorId'
     | '/doctors/$doctorId'
     | '/doctors'
   id:
@@ -95,6 +106,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/body-guide'
     | '/search'
+    | '/booking/$doctorId'
     | '/doctors/$doctorId'
     | '/doctors/'
   fileRoutesById: FileRoutesById
@@ -104,6 +116,7 @@ export interface RootRouteChildren {
   AccountRoute: typeof AccountRoute
   BodyGuideRoute: typeof BodyGuideRoute
   SearchRoute: typeof SearchRoute
+  BookingDoctorIdRoute: typeof BookingDoctorIdRoute
   DoctorsDoctorIdRoute: typeof DoctorsDoctorIdRoute
   DoctorsIndexRoute: typeof DoctorsIndexRoute
 }
@@ -138,6 +151,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SearchRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/booking/$doctorId': {
+      id: '/booking/$doctorId'
+      path: '/booking/$doctorId'
+      fullPath: '/booking/$doctorId'
+      preLoaderRoute: typeof BookingDoctorIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/doctors/': {
       id: '/doctors/'
       path: '/doctors'
@@ -160,6 +180,7 @@ const rootRouteChildren: RootRouteChildren = {
   AccountRoute: AccountRoute,
   BodyGuideRoute: BodyGuideRoute,
   SearchRoute: SearchRoute,
+  BookingDoctorIdRoute: BookingDoctorIdRoute,
   DoctorsDoctorIdRoute: DoctorsDoctorIdRoute,
   DoctorsIndexRoute: DoctorsIndexRoute,
 }

@@ -13,11 +13,13 @@ import {
   Phone,
   RotateCcw,
   ShieldCheck,
-  UserRoundPlus,
 } from "lucide-react";
 import { useMemo, useState, type FormEvent } from "react";
 
 export const Route = createFileRoute("/account")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    returnTo: typeof search["returnTo"] === "string" ? search["returnTo"] : "",
+  }),
   head: () => ({
     meta: [
       { title: "حساب المريض | دلّني" },
@@ -113,7 +115,13 @@ function AccountHeader({ title, subtitle }: { title: string; subtitle: string })
 }
 
 function PatientAccountPage() {
+  const { returnTo } = Route.useSearch();
   const [mode, setMode] = useState<AccountMode>("register");
+
+  const authenticate = (profile: { name: string; phone: string }) => {
+    sessionStorage.setItem("delnni_demo_patient", JSON.stringify(profile));
+    if (returnTo.startsWith("/")) window.location.assign(returnTo);
+  };
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-background px-4 py-6 sm:px-6 sm:py-10">
@@ -155,8 +163,12 @@ function PatientAccountPage() {
             </div>
           )}
 
-          {mode === "register" && <RegisterFlow onLogin={() => setMode("login")} />}
-          {mode === "login" && <LoginForm onForgot={() => setMode("forgot")} />}
+          {mode === "register" && (
+            <RegisterFlow onLogin={() => setMode("login")} onAuthenticated={authenticate} />
+          )}
+          {mode === "login" && (
+            <LoginForm onForgot={() => setMode("forgot")} onAuthenticated={authenticate} />
+          )}
           {mode === "forgot" && <ForgotPassword onBack={() => setMode("login")} />}
         </section>
 
@@ -169,7 +181,13 @@ function PatientAccountPage() {
   );
 }
 
-function RegisterFlow({ onLogin }: { onLogin: () => void }) {
+function RegisterFlow({
+  onLogin,
+  onAuthenticated,
+}: {
+  onLogin: () => void;
+  onAuthenticated: (profile: { name: string; phone: string }) => void;
+}) {
   const [step, setStep] = useState<RegistrationStep>(1);
   const [data, setData] = useState(initialRegistration);
   const [accepted, setAccepted] = useState(false);
@@ -216,6 +234,7 @@ function RegisterFlow({ onLogin }: { onLogin: () => void }) {
       return;
     }
     setSubmitted(true);
+    onAuthenticated({ name: data.name, phone: data.phone });
   };
 
   if (submitted) {
@@ -466,18 +485,25 @@ function RegisterFlow({ onLogin }: { onLogin: () => void }) {
   );
 }
 
-function LoginForm({ onForgot }: { onForgot: () => void }) {
+function LoginForm({
+  onForgot,
+  onAuthenticated,
+}: {
+  onForgot: () => void;
+  onAuthenticated: (profile: { name: string; phone: string }) => void;
+}) {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
   const submit = (event: FormEvent) => {
     event.preventDefault();
-    setMessage(
-      !egyptianPhonePattern.test(phone) || password.length < 8
-        ? "راجع رقم الهاتف وكلمة المرور"
-        : "تسجيل الدخول الحقيقي سيتاح بعد ربط نظام الحساب بقاعدة البيانات.",
-    );
+    if (!egyptianPhonePattern.test(phone) || password.length < 8) {
+      setMessage("راجع رقم الهاتف وكلمة المرور");
+      return;
+    }
+    setMessage("تم تسجيل الدخول للنسخة التجريبية. لم تُرسل كلمة المرور أو تُخزن.");
+    onAuthenticated({ name: "المريض", phone });
   };
 
   return (
