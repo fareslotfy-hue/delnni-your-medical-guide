@@ -110,12 +110,12 @@ function Index() {
             >
               <User className="size-5" />
             </Link>
-            <a
-              href="#join-doctor"
+            <Link
+              to="/join-doctor"
               className="rounded-xl bg-accent px-3 py-2 text-xs font-bold text-accent-foreground transition-transform hover:-translate-y-0.5 sm:px-4 sm:text-sm"
             >
               انضم كطبيب
-            </a>
+            </Link>
           </div>
         </div>
       </nav>
@@ -369,13 +369,12 @@ function Index() {
                 صقر.
               </p>
             </div>
-            <button
-              type="button"
-              disabled
-              className="relative w-full cursor-not-allowed rounded-xl bg-accent px-6 py-3.5 text-sm font-bold text-accent-foreground opacity-80 lg:w-auto"
+            <Link
+              to="/join-doctor"
+              className="relative flex min-h-12 w-full items-center justify-center rounded-xl bg-accent px-6 text-sm font-bold text-accent-foreground lg:w-auto"
             >
-              التسجيل يفتح قريبًا
-            </button>
+              ابدأ التسجيل
+            </Link>
           </div>
         </section>
       </main>
