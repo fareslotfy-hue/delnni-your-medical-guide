@@ -38,7 +38,7 @@ type StoredBooking = {
   doctorId: string;
   slot: string;
   patientName: string;
-  status: "awaiting_payment";
+  status: "awaiting_payment" | "payment_review" | "payment_rejected" | "confirmed";
 };
 
 function BookingPage() {
@@ -392,13 +392,13 @@ function BookingPage() {
                   رقم الطلب: <b dir="ltr">{bookingId}</b>. الموعد ليس مؤكدًا بعد؛ في المرحلة العاشرة
                   سترفع إثبات دفع المقدم وتنتظر مراجعة الإدارة.
                 </p>
-                <button
-                  type="button"
-                  disabled
-                  className="mt-6 min-h-12 w-full cursor-not-allowed rounded-xl bg-primary px-5 text-sm font-black text-primary-foreground opacity-70"
+                <Link
+                  to="/payment/$bookingId"
+                  params={{ bookingId }}
+                  className="mt-6 flex min-h-12 w-full items-center justify-center rounded-xl bg-primary px-5 text-sm font-black text-primary-foreground"
                 >
-                  متابعة دفع {deposit} جنيه — المرحلة العاشرة
-                </button>
+                  متابعة دفع {deposit} جنيه
+                </Link>
                 <Link
                   to="/"
                   className="mt-3 inline-flex min-h-11 items-center text-xs font-black text-accent"
