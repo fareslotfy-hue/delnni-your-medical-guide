@@ -13,6 +13,7 @@ import {
   Stethoscope,
   User,
 } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import body3d from "@/assets/body-3d.png";
 import doctor1 from "@/assets/doctor-1.jpg";
@@ -84,6 +85,12 @@ const steps = [
 ];
 
 function Index() {
+  const [hasPatientSession, setHasPatientSession] = useState(false);
+
+  useEffect(() => {
+    setHasPatientSession(Boolean(sessionStorage.getItem("delnni_demo_patient")));
+  }, []);
+
   return (
     <div className="min-h-screen overflow-x-hidden bg-background">
       <nav className="sticky top-0 z-50 border-b border-border bg-card/90 backdrop-blur-xl">
@@ -96,7 +103,8 @@ function Index() {
           </a>
           <div className="flex items-center gap-2 sm:gap-3">
             <Link
-              to="/account"
+              to={hasPatientSession ? "/patient" : "/account"}
+              search={hasPatientSession ? undefined : { returnTo: "" }}
               aria-label="حساب المريض"
               className="flex size-10 items-center justify-center rounded-full bg-secondary text-primary transition-colors hover:bg-muted"
             >
